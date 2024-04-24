@@ -5,7 +5,7 @@
 --[[
 This file is an extension of the drawing editor Ipe (ipe7.sourceforge.net)
 
-Copyright (c) 2020 Lluís Alemany-Puig
+Copyright (c) 2024 Lluís Alemany-Puig
 
 This file can be distributed and modified under the terms of the GNU General
 Public License as published by the Free Software Foundation; either version
