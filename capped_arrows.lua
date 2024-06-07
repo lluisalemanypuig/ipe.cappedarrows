@@ -43,26 +43,22 @@ end
 
 function make_dialog(model)
 	local d = ipeui.Dialog(model.ui:win(), "Capped arrows")
-	d:add("label", "label", {label = "Base"}, 1, 1)
-	d:add("label", "label", {label = "Head"}, 2, 1)
+	d:add("label", "label", {label = "Start"}, 1, 1)
+	d:add("label", "label", {label = "End"}, 2, 1)
 	
-	d:add("base_dist", "input", {}, 1, 2, 1, 1)
-	d:add("head_dist", "input", {}, 2, 2, 1, 1)
+	d:add("start_dist", "input", {}, 1, 2, 1, 1)
+	d:add("end_dist", "input", {}, 2, 2, 1, 1)
 	
 	d:addButton("ok", "&Ok", "accept")
 	d:addButton("cancel", "&Cancel", "reject")
 	return d
 end
 
-function add_segment(model, p, q, r1, r2)
-	print("p:", _G.type(p))
-	print("q:", _G.type(q))
+function add_segment(model, Start, End, start_dist, end_dist)
+	local start_to_end = (End - Start):normalized()
 
-	local pq = (q - p):normalized()
-	print("pq=", pq)
-
-	local P = p + pq*r1
-	local Q = q - pq*r2
+	local P = Start + start_to_end*start_dist
+	local Q = End - start_to_end*end_dist
 
 	-- prepare binding
 	local segment_as_table = {type="segment", P,Q}
@@ -100,17 +96,17 @@ function run(model)
 		return
 	end
 	
-	local r1 = d:get("base_dist")
-	local r2 = d:get("head_dist")
+	local start_dist = d:get("start_dist")
+	local end_dist = d:get("end_dist")
 
 	for key, value in ipairs(selection) do
 		print(key, value)
 	end
 
-	local P = p:bbox(selection[1]):topRight()
-	local Q = p:bbox(selection[2]):topRight()
+	local Start = p:bbox(selection[1]):topRight()
+	local End = p:bbox(selection[2]):topRight()
 	
-	add_segment(model, P, Q, r1, r2)
+	add_segment(model, Start, End, start_dist, end_dist)
 	
 	model.ui:update()
 end
